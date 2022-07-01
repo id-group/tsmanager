@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: tsmadmin
+    password: pwd
+    url: jdbc:postgresql://localhost:5430/tsManager
+    driver-class-name: org.postgresql.Driver

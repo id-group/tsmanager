@@ -1,0 +1,8 @@
+apply plugin: 'com.github.node-gradle.node'
+apply plugin: 'base'
+
+task appNpmBuild(type: NpmTask) {
+    args = ['run', 'build']
+}
+
+assemble.dependsOn(appNpmBuild)

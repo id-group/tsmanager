@@ -1,0 +1,63 @@
+plugins {
+    id 'idea'
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id 'com.github.johnrengelman.shadow' version '6.1.0' apply false
+    id "com.github.node-gradle.node" version "3.0.1"
+}
+
+idea {
+    project {
+        languageLevel = 17
+    }
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+allprojects {
+    group "ru.idgroup.tsmanager"
+    version="1.0.0"
+
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+
+    apply plugin: "io.spring.dependency-management"
+    dependencyManagement {
+        dependencies {
+            imports {
+                mavenBom("org.springframework.boot:spring-boot-dependencies:2.6.3")
+            }
+            dependency("org.testcontainers:junit-jupiter:${Versions.testcontainers}")
+            dependency("org.testcontainers:postgresql:${Versions.testcontainers}")
+
+            dependency("org.mapstruct:mapstruct:${Versions.mapstruct}")
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            failOnVersionConflict()
+        }
+        resolutionStrategy {
+        }
+    }
+}
+
+node {
+    version = '16.15.1'
+}
+
+//print versions from BOM
+task managedVersions {
+    doLast {
+        dependencyManagement.managedVersions.each {
+            println it
+        }
+    }
+}
+
